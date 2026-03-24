@@ -1,0 +1,1565 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Happy Birthday Yogesh</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --pp: #b060ff;
+        --pk: #ff4fcf;
+        --bl: #4fc3ff;
+        --cy: #00f5d4;
+        --bg: #07050e;
+        --glass: rgba(255, 255, 255, 0.06);
+        --gb: rgba(255, 255, 255, 0.11);
+      }
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: var(--bg);
+      }
+      body {
+        font-family: "DM Sans", sans-serif;
+        color: #fff;
+      }
+
+      .screen {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        overflow: hidden;
+        will-change: opacity, transform;
+      }
+      .screen.active {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      .mbg {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+          radial-gradient(
+            ellipse at 15% 40%,
+            rgba(176, 96, 255, 0.22) 0%,
+            transparent 45%
+          ),
+          radial-gradient(
+            ellipse at 85% 25%,
+            rgba(255, 79, 207, 0.18) 0%,
+            transparent 45%
+          ),
+          radial-gradient(
+            ellipse at 55% 85%,
+            rgba(79, 195, 255, 0.15) 0%,
+            transparent 45%
+          );
+      }
+
+      /* ══ S1 COUNTDOWN ══ */
+      #s1 {
+        background: var(--bg);
+      }
+      #s1 .mbg {
+        animation: mbgP 6s ease-in-out infinite alternate;
+      }
+      @keyframes mbgP {
+        0% {
+          opacity: 0.6;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+      #stars {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+      }
+      .star {
+        position: absolute;
+        border-radius: 50%;
+        background: #fff;
+        animation: twinkle var(--d, 3s) ease-in-out infinite;
+        opacity: 0;
+      }
+      @keyframes twinkle {
+        0%,
+        100% {
+          opacity: 0;
+          transform: scale(0.8);
+        }
+        50% {
+          opacity: var(--op, 0.7);
+          transform: scale(1.2);
+        }
+      }
+
+      .count-top {
+        font-family: "Space Mono", monospace;
+        font-size: clamp(0.6rem, 1.4vw, 0.78rem);
+        letter-spacing: 0.45em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.4);
+        margin-bottom: 2.5rem;
+      }
+      .count-top em {
+        color: var(--cy);
+        font-style: normal;
+      }
+      .countdown {
+        display: flex;
+        gap: clamp(0.7rem, 3vw, 2.5rem);
+        align-items: flex-start;
+      }
+      .cu {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .cn {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(3.5rem, 12vw, 9.5rem);
+        line-height: 0.95;
+        background: linear-gradient(
+          135deg,
+          var(--pp),
+          var(--pk) 50%,
+          var(--bl)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(0 0 22px rgba(176, 96, 255, 0.55));
+        min-width: 2ch;
+        text-align: center;
+      }
+      .cl {
+        font-size: 0.58rem;
+        letter-spacing: 0.35em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.3);
+        margin-top: 0.4rem;
+      }
+      .csep {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(2.5rem, 7vw, 5.5rem);
+        color: rgba(255, 255, 255, 0.13);
+        line-height: 0.95;
+        margin-top: 0.05em;
+      }
+      .count-foot {
+        margin-top: 2.8rem;
+        font-size: clamp(0.8rem, 1.7vw, 0.95rem);
+        color: rgba(255, 255, 255, 0.32);
+        font-style: italic;
+        letter-spacing: 0.04em;
+      }
+      .ring {
+        position: absolute;
+        border-radius: 50%;
+        border: 1px solid transparent;
+        background:
+          linear-gradient(var(--bg), var(--bg)) padding-box,
+          linear-gradient(90deg, var(--pp), var(--pk), var(--bl)) border-box;
+        animation: spin var(--sp, 10s) linear infinite;
+        pointer-events: none;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .skip-hint {
+        position: absolute;
+        bottom: 1.4rem;
+        font-size: 0.6rem;
+        color: rgba(255, 255, 255, 0.16);
+        letter-spacing: 0.2em;
+        font-family: "Space Mono", monospace;
+        text-transform: uppercase;
+      }
+
+      /* ══ S2 REVEAL ══ */
+      #s2 {
+        background: var(--bg);
+      }
+      #s2 .mbg {
+        background: radial-gradient(
+          ellipse at center,
+          rgba(176, 96, 255, 0.32) 0%,
+          transparent 60%
+        );
+        animation: rP 2.5s ease-in-out infinite alternate;
+      }
+      @keyframes rP {
+        0% {
+          transform: scale(0.95);
+          opacity: 0.55;
+        }
+        100% {
+          transform: scale(1.05);
+          opacity: 1;
+        }
+      }
+      #rtext {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(2.8rem, 9.5vw, 8.5rem);
+        line-height: 1.05;
+        text-align: center;
+        letter-spacing: 0.05em;
+        color: #fff;
+        position: relative;
+        z-index: 1;
+        text-shadow:
+          0 0 22px rgba(176, 96, 255, 0.9),
+          0 0 65px rgba(255, 79, 207, 0.5),
+          0 0 130px rgba(79, 195, 255, 0.3);
+      }
+      #rtext span {
+        display: inline-block;
+        opacity: 0;
+      }
+      .rev-sub {
+        position: relative;
+        z-index: 1;
+        margin-top: 1.1rem;
+        font-size: clamp(0.8rem, 1.8vw, 1.05rem);
+        color: rgba(255, 255, 255, 0.42);
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        font-family: "Space Mono", monospace;
+        opacity: 0;
+      }
+
+      /* ══ S3 HERO ══ */
+      #s3 {
+        background: var(--bg);
+      }
+      .bwrap {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+      }
+      .balloon {
+        position: absolute;
+        bottom: -120px;
+        left: var(--lft, 50%);
+        animation: floatUp var(--dur, 9s) ease-in var(--del, 0s) infinite;
+        opacity: 0;
+      }
+      @keyframes floatUp {
+        0% {
+          transform: translateY(0) rotate(var(--rot, 0deg));
+          opacity: 0;
+        }
+        8% {
+          opacity: 0.85;
+        }
+        92% {
+          opacity: 0.7;
+        }
+        100% {
+          transform: translateY(-115vh) rotate(calc(var(--rot, 0deg) * -1));
+          opacity: 0;
+        }
+      }
+      .photo-wrap {
+        width: clamp(140px, 22vw, 210px);
+        height: clamp(140px, 22vw, 210px);
+        position: relative;
+        margin-bottom: 1.6rem;
+        animation: imgF 4s ease-in-out infinite;
+      }
+      @keyframes imgF {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-12px);
+        }
+      }
+      .photo-glow {
+        position: absolute;
+        inset: -7px;
+        border-radius: 50%;
+        background: conic-gradient(
+          var(--pp),
+          var(--pk),
+          var(--bl),
+          var(--cy),
+          var(--pp)
+        );
+        animation:
+          spin 4s linear infinite,
+          gP 3s ease-in-out infinite;
+        filter: blur(5px);
+      }
+      @keyframes gP {
+        0%,
+        100% {
+          filter: blur(5px) brightness(1);
+        }
+        50% {
+          filter: blur(7px) brightness(1.35);
+        }
+      }
+      .photo-inner {
+        position: absolute;
+        inset: 5px;
+        border-radius: 50%;
+        background: var(--bg);
+        overflow: hidden;
+        z-index: 1;
+      }
+      .photo-inner img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+      .photo-ph {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(
+          135deg,
+          rgba(176, 96, 255, 0.3),
+          rgba(255, 79, 207, 0.3)
+        );
+        font-size: 4rem;
+      }
+      .hero-name {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(2rem, 5.5vw, 4.2rem);
+        letter-spacing: 0.06em;
+        background: linear-gradient(135deg, #fff 40%, rgba(176, 96, 255, 0.85));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.4rem;
+        text-align: center;
+      }
+      .hero-tag {
+        font-size: clamp(0.8rem, 1.7vw, 0.95rem);
+        color: rgba(255, 255, 255, 0.42);
+        font-style: italic;
+        margin-bottom: 2rem;
+        text-align: center;
+      }
+      .hero-tag em {
+        color: var(--pk);
+        font-style: normal;
+      }
+      .vibe-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: linear-gradient(135deg, var(--pp), var(--pk));
+        color: #fff;
+        border: none;
+        border-radius: 50px;
+        padding: 0.78rem 2rem;
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.92rem;
+        font-weight: 500;
+        cursor: pointer;
+        letter-spacing: 0.04em;
+        box-shadow:
+          0 0 28px rgba(176, 96, 255, 0.4),
+          0 0 55px rgba(255, 79, 207, 0.2);
+        transition:
+          transform 0.25s,
+          box-shadow 0.25s;
+      }
+      .vibe-btn:hover {
+        transform: translateY(-2px) scale(1.04);
+        box-shadow:
+          0 0 48px rgba(176, 96, 255, 0.6),
+          0 0 75px rgba(255, 79, 207, 0.3);
+      }
+      .vibe-btn:active {
+        transform: scale(0.97);
+      }
+      #spotlight {
+        position: absolute;
+        inset: 0;
+        z-index: 5;
+        background: rgba(0, 0, 0, 0.8);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.8s;
+      }
+      #spotlight.on {
+        opacity: 1;
+      }
+      .sbeam {
+        position: absolute;
+        top: -60%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 310px;
+        height: 130%;
+        background: conic-gradient(
+          from -15deg at 50% 0%,
+          transparent 0deg,
+          rgba(255, 240, 180, 0.13) 16deg,
+          transparent 32deg
+        );
+        filter: blur(18px);
+        animation: bSway 5s ease-in-out infinite;
+      }
+      @keyframes bSway {
+        0%,
+        100% {
+          transform: translateX(-50%) rotate(-3deg);
+        }
+        50% {
+          transform: translateX(-50%) rotate(3deg);
+        }
+      }
+      .spot-close {
+        position: absolute;
+        bottom: 2.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--glass);
+        border: 1px solid var(--gb);
+        color: rgba(255, 255, 255, 0.55);
+        padding: 0.42rem 1.3rem;
+        border-radius: 20px;
+        cursor: pointer;
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.78rem;
+        transition: all 0.3s;
+        pointer-events: all;
+      }
+      .spot-close:hover {
+        color: #fff;
+        border-color: var(--pp);
+      }
+
+      /* ══ S4 FUN + CAKE ══ */
+      #s4 {
+        background: var(--bg);
+      }
+      #s4 .mbg {
+        background:
+          radial-gradient(
+            ellipse at 20% 60%,
+            rgba(255, 79, 207, 0.18) 0%,
+            transparent 45%
+          ),
+          radial-gradient(
+            ellipse at 80% 30%,
+            rgba(79, 195, 255, 0.15) 0%,
+            transparent 45%
+          ),
+          radial-gradient(
+            ellipse at 55% 90%,
+            rgba(176, 96, 255, 0.15) 0%,
+            transparent 45%
+          );
+      }
+      .s4-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: clamp(0.7rem, 2vh, 1.3rem);
+        position: relative;
+        z-index: 1;
+        padding: 1.5rem;
+        width: 100%;
+        max-width: 660px;
+      }
+      .fun-row {
+        display: flex;
+        gap: 0.9rem;
+        width: 100%;
+      }
+      .fun-card {
+        flex: 1;
+        background: var(--glass);
+        border: 1px solid var(--gb);
+        border-radius: 18px;
+        padding: 1.1rem 1.3rem;
+        backdrop-filter: blur(20px);
+        transition:
+          transform 0.3s,
+          box-shadow 0.3s;
+      }
+      .fun-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 14px 45px rgba(0, 0, 0, 0.35);
+      }
+      .fc-icon {
+        font-size: 1.7rem;
+        margin-bottom: 0.4rem;
+      }
+      .fc-title {
+        font-family: "Bebas Neue", sans-serif;
+        letter-spacing: 0.06em;
+        font-size: 1.05rem;
+        color: var(--pk);
+        margin-bottom: 0.3rem;
+      }
+      .fc-text {
+        font-size: 0.78rem;
+        color: rgba(255, 255, 255, 0.48);
+        line-height: 1.6;
+      }
+      .fun-card.tube {
+        border-color: rgba(255, 224, 64, 0.22);
+        background: rgba(255, 224, 64, 0.04);
+      }
+      .fun-card.tube .fc-title {
+        color: #ffe040;
+      }
+      .cake-area {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .cake-hint {
+        font-family: "Space Mono", monospace;
+        font-size: 0.68rem;
+        letter-spacing: 0.15em;
+        color: rgba(255, 255, 255, 0.26);
+        animation: hB 2s ease-in-out infinite;
+      }
+      @keyframes hB {
+        0%,
+        100% {
+          opacity: 0.26;
+        }
+        50% {
+          opacity: 0.62;
+        }
+      }
+      .cake-wrap {
+        cursor: pointer;
+        transition: transform 0.3s;
+        user-select: none;
+        display: block;
+      }
+      .cake-wrap:hover {
+        transform: scale(1.07);
+      }
+      .cake-wrap:active {
+        transform: scale(0.96);
+      }
+      .fl {
+        transform-origin: center bottom;
+        animation: flk 0.18s ease-in-out infinite alternate;
+      }
+      @keyframes flk {
+        0% {
+          transform: scaleX(1) scaleY(1) rotate(-1deg);
+        }
+        50% {
+          transform: scaleX(0.88) scaleY(1.07) rotate(1.5deg);
+        }
+        100% {
+          transform: scaleX(1.06) scaleY(0.95) rotate(-0.5deg);
+        }
+      }
+      .smoke {
+        position: fixed;
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: rgba(210, 210, 210, 0.55);
+        pointer-events: none;
+        animation: smokeUp 1.8s ease-out forwards;
+      }
+      @keyframes smokeUp {
+        0% {
+          opacity: 0.7;
+          transform: scale(1) translateY(0);
+        }
+        100% {
+          opacity: 0;
+          transform: scale(4.5) translateY(-65px);
+        }
+      }
+      .final-card {
+        background: linear-gradient(
+          135deg,
+          rgba(176, 96, 255, 0.1),
+          rgba(255, 79, 207, 0.1)
+        );
+        border: 1px solid rgba(255, 79, 207, 0.28);
+        border-radius: 18px;
+        padding: 1.3rem 2rem;
+        text-align: center;
+        backdrop-filter: blur(20px);
+        font-family: "Bebas Neue", sans-serif;
+        letter-spacing: 0.07em;
+        font-size: clamp(1.1rem, 3.5vw, 1.7rem);
+        color: #fff;
+        text-shadow: 0 0 18px rgba(176, 96, 255, 0.7);
+        width: 100%;
+        opacity: 0;
+        transform: translateY(18px);
+      }
+
+      /* music */
+      .music-pill {
+        position: fixed;
+        top: 1.1rem;
+        right: 1.3rem;
+        z-index: 200;
+        background: var(--glass);
+        border: 1px solid var(--gb);
+        color: rgba(255, 255, 255, 0.55);
+        padding: 0.38rem 1rem;
+        border-radius: 20px;
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.75rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        letter-spacing: 0.04em;
+        backdrop-filter: blur(12px);
+      }
+      .music-pill:hover {
+        color: #fff;
+        border-color: var(--pp);
+        background: rgba(176, 96, 255, 0.15);
+      }
+
+      /* overlay */
+      #tov {
+        position: fixed;
+        inset: 0;
+        z-index: 500;
+        background: #000;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      /* ══ FOOD/TUBELIGHT POPUP ══ */
+      #funPopup {
+        position: fixed;
+        inset: 0;
+        z-index: 400;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(10px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.35s;
+        padding: 1rem;
+      }
+      #funPopup.show {
+        opacity: 1;
+        pointer-events: all;
+      }
+      .popup-box {
+        background: #111118;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 22px;
+        width: min(480px, 100%);
+        overflow: hidden;
+        box-shadow:
+          0 40px 90px rgba(0, 0, 0, 0.6),
+          0 0 60px rgba(176, 96, 255, 0.12);
+        transform: translateY(35px) scale(0.95);
+        transition: transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      #funPopup.show .popup-box {
+        transform: translateY(0) scale(1);
+      }
+      .popup-header {
+        background: linear-gradient(135deg, #1a0a2e, #0e0818);
+        padding: 1.2rem 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      }
+      .popup-title {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 1.3rem;
+        letter-spacing: 0.1em;
+        background: linear-gradient(90deg, var(--pp), var(--pk));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .popup-close {
+        background: rgba(255, 255, 255, 0.07);
+        border: none;
+        color: rgba(255, 255, 255, 0.45);
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+      }
+      .popup-close:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.14);
+      }
+      .popup-body {
+        padding: 1.4rem 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .popup-banner {
+        background: linear-gradient(
+          135deg,
+          rgba(176, 96, 255, 0.12),
+          rgba(255, 79, 207, 0.08)
+        );
+        border: 1px solid rgba(176, 96, 255, 0.25);
+        border-radius: 14px;
+        padding: 1.1rem 1.3rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      .pb-emoji {
+        font-size: 2.2rem;
+      }
+      .pb-text h3 {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 1.15rem;
+        letter-spacing: 0.08em;
+        margin-bottom: 0.2rem;
+      }
+      .pb-text p {
+        font-size: 0.78rem;
+        color: rgba(255, 255, 255, 0.48);
+        line-height: 1.5;
+      }
+      .popup-stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.8rem;
+      }
+      .ps {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        padding: 0.9rem 1rem;
+      }
+      .ps-label {
+        font-size: 0.62rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.32);
+        margin-bottom: 0.3rem;
+      }
+      .ps-val {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 1.5rem;
+        letter-spacing: 0.04em;
+        color: #fff;
+      }
+      .ps-badge {
+        display: inline-block;
+        background: rgba(176, 96, 255, 0.18);
+        color: var(--pp);
+        font-size: 0.65rem;
+        padding: 0.1rem 0.45rem;
+        border-radius: 5px;
+        margin-top: 0.15rem;
+        letter-spacing: 0.05em;
+      }
+      .ps.food .ps-badge {
+        background: rgba(255, 79, 207, 0.15);
+        color: var(--pk);
+      }
+      .ps.tube .ps-badge {
+        background: rgba(255, 224, 64, 0.12);
+        color: #ffe040;
+      }
+      .popup-footer {
+        text-align: center;
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 1.3rem;
+        letter-spacing: 0.08em;
+        background: linear-gradient(90deg, var(--pp), var(--pk), var(--cy));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        padding: 0.3rem 0;
+      }
+
+      @media (max-width: 520px) {
+        .csep {
+          display: none;
+        }
+        .countdown {
+          gap: 0.6rem;
+        }
+        .fun-row {
+          flex-direction: column;
+        }
+        .fun-card {
+          padding: 0.9rem 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="tov"></div>
+    <button class="music-pill" id="mBtn">♪ Music</button>
+
+    <!-- ══ SCREEN 1 ══ -->
+    <section class="screen active" id="s1">
+      <div class="mbg"></div>
+      <div id="stars"></div>
+      <div
+        class="ring"
+        style="width: 500px; height: 500px; --sp: 10s; opacity: 0.12"
+      ></div>
+      <div
+        class="ring"
+        style="
+          width: 720px;
+          height: 720px;
+          --sp: 15s;
+          animation-direction: reverse;
+          opacity: 0.06;
+        "
+      ></div>
+
+      <p class="count-top">Something <em>special</em> is coming…</p>
+      <div class="countdown">
+        <div class="cu">
+          <div class="cn" id="cd">--</div>
+          <div class="cl">Days</div>
+        </div>
+        <div class="csep">:</div>
+        <div class="cu">
+          <div class="cn" id="ch">--</div>
+          <div class="cl">Hours</div>
+        </div>
+        <div class="csep">:</div>
+        <div class="cu">
+          <div class="cn" id="cm">--</div>
+          <div class="cl">Mins</div>
+        </div>
+        <div class="csep">:</div>
+        <div class="cu">
+          <div class="cn" id="cs">--</div>
+          <div class="cl">Secs</div>
+        </div>
+      </div>
+      <p class="count-foot">
+        For someone who makes every day feel like a celebration.
+      </p>
+      <p class="skip-hint">double-click to preview →</p>
+    </section>
+
+    <!-- ══ SCREEN 2 ══ -->
+    <section class="screen" id="s2">
+      <div class="mbg"></div>
+      <div id="rtext"></div>
+      <p class="rev-sub" id="rsub">March 25 · Twenty Five</p>
+    </section>
+
+    <!-- ══ SCREEN 3 ══ -->
+    <section class="screen" id="s3">
+      <div class="mbg"></div>
+      <div id="spotlight">
+        <div class="sbeam"></div>
+        <button class="spot-close" id="spotClose">✦ close the curtains</button>
+      </div>
+      <div class="bwrap" id="bwrap"></div>
+
+      <div class="photo-wrap" id="pWrap">
+        <div class="photo-glow"></div>
+        <div class="photo-inner">
+          <img
+            id="yImg"
+            src=""
+            alt="Yogesh"
+            onerror="
+              this.style.display = 'none';
+              document.getElementById('yPh').style.display = 'flex';
+            "
+          />
+          <div id="yPh" class="photo-ph" style="display: flex">🎉</div>
+        </div>
+      </div>
+
+      <h1 class="hero-name" id="hName">Yogesh — built different ✨</h1>
+      <p class="hero-tag" id="hTag">One of a kind. <em>Actually.</em></p>
+      <button class="vibe-btn" id="vibeBtn">✦ Start the vibe</button>
+    </section>
+
+    <!-- ══ SCREEN 4 ══ -->
+    <section class="screen" id="s4">
+      <div class="mbg"></div>
+      <div class="s4-inner" id="s4inner">
+        <div class="fun-row">
+          <div
+            class="fun-card food"
+            id="fc1"
+            style="opacity: 0; transform: translateY(25px)"
+          >
+            <div class="fc-icon">🍕</div>
+            <div class="fc-title">Food First, Always</div>
+            <div class="fc-text">
+              Gogesh and food is a love story that needs no explanation. Any
+              plan instantly gets better the moment eating is involved.
+              Priorities sorted.
+            </div>
+          </div>
+          <div
+            class="fun-card tube"
+            id="fc2"
+            style="opacity: 0; transform: translateY(25px)"
+          >
+            <div class="fc-icon">💡</div>
+            <div class="fc-title">The Tubelight Club</div>
+            <div class="fc-text">
+              We get the joke. We just get it… fashionably late. Others: "haha."
+              Us, 3 mins later: "OH WAIT 😭." Still counts. Still funny.
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="cake-area"
+          id="cakeArea"
+          style="opacity: 0; transform: translateY(25px)"
+        >
+          <div class="cake-wrap" id="cakeWrap">
+            <svg
+              width="170"
+              height="200"
+              viewBox="0 0 170 200"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <defs>
+                <linearGradient id="cg1" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#562070" />
+                  <stop offset="100%" stop-color="#3a0e55" />
+                </linearGradient>
+                <linearGradient id="cg2" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#662880" />
+                  <stop offset="100%" stop-color="#481668" />
+                </linearGradient>
+                <radialGradient id="fg" cx="50%" cy="70%" r="50%">
+                  <stop offset="0%" stop-color="#fffacc" />
+                  <stop offset="35%" stop-color="#ffb030" />
+                  <stop offset="100%" stop-color="#ff4010" stop-opacity="0" />
+                </radialGradient>
+                <linearGradient id="cand" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#ffaa50" />
+                  <stop offset="100%" stop-color="#ff5080" />
+                </linearGradient>
+              </defs>
+              <ellipse cx="85" cy="191" rx="72" ry="8" fill="rgba(0,0,0,.2)" />
+              <!-- bottom tier -->
+              <rect
+                x="14"
+                y="141"
+                width="142"
+                height="49"
+                rx="12"
+                fill="url(#cg1)"
+              />
+              <rect
+                x="14"
+                y="141"
+                width="142"
+                height="10"
+                rx="5"
+                fill="rgba(255,255,255,.09)"
+              />
+              <circle cx="40" cy="169" r="4.5" fill="#ff4fcf" opacity=".85" />
+              <circle cx="62" cy="169" r="4.5" fill="#b060ff" opacity=".85" />
+              <circle cx="85" cy="169" r="4.5" fill="#4fc3ff" opacity=".85" />
+              <circle cx="108" cy="169" r="4.5" fill="#ff4fcf" opacity=".85" />
+              <circle cx="130" cy="169" r="4.5" fill="#b060ff" opacity=".85" />
+              <!-- top tier -->
+              <rect
+                x="38"
+                y="100"
+                width="94"
+                height="45"
+                rx="11"
+                fill="url(#cg2)"
+              />
+              <rect
+                x="38"
+                y="100"
+                width="94"
+                height="8"
+                rx="4"
+                fill="rgba(255,255,255,.09)"
+              />
+              <circle cx="62" cy="126" r="3.8" fill="#00f5d4" opacity=".85" />
+              <circle cx="85" cy="126" r="3.8" fill="#ff4fcf" opacity=".85" />
+              <circle cx="108" cy="126" r="3.8" fill="#4fc3ff" opacity=".85" />
+              <!-- frosting -->
+              <path
+                d="M38 108 Q49 121 60 108 Q71 121 82 108 Q93 121 104 108 Q115 121 126 108 Q132 121 132 108"
+                fill="none"
+                stroke="#c87fff"
+                stroke-width="2.2"
+                opacity=".45"
+              />
+              <path
+                d="M14 152 Q28 167 42 152 Q56 167 70 152 Q84 167 98 152 Q112 167 126 152 Q140 167 154 152"
+                fill="none"
+                stroke="#ff80df"
+                stroke-width="2.2"
+                opacity=".38"
+              />
+              <text
+                x="85"
+                y="133"
+                text-anchor="middle"
+                font-family="'Bebas Neue',sans-serif"
+                font-size="13"
+                fill="#fff"
+                opacity=".88"
+                letter-spacing="2"
+              >
+                23
+              </text>
+              <!-- candle -->
+              <rect
+                x="79"
+                y="72"
+                width="12"
+                height="31"
+                rx="4"
+                fill="url(#cand)"
+              />
+              <rect
+                x="79"
+                y="77"
+                width="12"
+                height="3"
+                rx="1.5"
+                fill="rgba(255,255,255,.2)"
+              />
+              <rect
+                x="79"
+                y="85"
+                width="12"
+                height="3"
+                rx="1.5"
+                fill="rgba(255,255,255,.2)"
+              />
+              <rect
+                x="79"
+                y="93"
+                width="12"
+                height="3"
+                rx="1.5"
+                fill="rgba(255,255,255,.2)"
+              />
+              <!-- flame -->
+              <g id="flameG">
+                <ellipse
+                  cx="85"
+                  cy="58"
+                  rx="11"
+                  ry="14"
+                  fill="#ff6010"
+                  opacity=".12"
+                  class="fl"
+                />
+                <path
+                  d="M85 41 C92 49 95 58 92 65 C89 71 81 71 78 65 C75 58 78 49 85 41Z"
+                  fill="url(#fg)"
+                  class="fl"
+                />
+                <ellipse
+                  cx="85"
+                  cy="63"
+                  rx="3.2"
+                  ry="4.5"
+                  fill="#fffacc"
+                  class="fl"
+                />
+              </g>
+            </svg>
+          </div>
+          <p class="cake-hint" id="cakeHint">↑ blow out the candle</p>
+        </div>
+
+        <div class="final-card" id="finalCard">
+          Happy Birthday, Gogesh 🎂 &nbsp;—&nbsp;
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ FOOD/TUBELIGHT POPUP ══ -->
+    <div id="funPopup">
+      <div class="popup-box">
+        <div class="popup-header">
+          <div class="popup-title">🍕 Gogesh Dashboard 💡</div>
+          <button class="popup-close" id="popClose">✕</button>
+        </div>
+        <div class="popup-body">
+          <div class="popup-banner">
+            <div class="pb-emoji">🎂</div>
+            <div class="pb-text">
+              <h3>Status: Legend Mode — ACTIVE</h3>
+              <p>
+                System detected: it's Yogesh's birthday. All priorities
+                redirected to food and vibes.
+              </p>
+            </div>
+          </div>
+          <div class="popup-stats">
+            <div class="ps food">
+              <div class="ps-label">Plates Today</div>
+              <div class="ps-val">∞</div>
+              <div class="ps-badge">No limit set</div>
+            </div>
+            <div class="ps tube">
+              <div class="ps-label">Jokes Understood</div>
+              <div class="ps-val">Eventually</div>
+              <div class="ps-badge">3 min delay</div>
+            </div>
+            <div class="ps">
+              <div class="ps-label">Vibe Level</div>
+              <div class="ps-val">Immaculate</div>
+              <div class="ps-badge">↑ All time high</div>
+            </div>
+            <div class="ps food">
+              <div class="ps-label">Food Budget</div>
+              <div class="ps-val">Unlimited</div>
+              <div class="ps-badge">Birthday rules</div>
+            </div>
+          </div>
+          <div class="popup-footer">Happy Birthday, Gogesh 🎉</div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ── STARS ──
+      const stEl = document.getElementById("stars");
+      for (let i = 0; i < 100; i++) {
+        const s = document.createElement("div");
+        s.className = "star";
+        const sz = Math.random() * 2.2 + 0.5;
+        s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random() * 100}%;top:${Math.random() * 100}%;--d:${(Math.random() * 3 + 2).toFixed(1)}s;--op:${(Math.random() * 0.6 + 0.3).toFixed(2)};animation-delay:${(Math.random() * 5).toFixed(2)}s;`;
+        stEl.appendChild(s);
+      }
+
+      // ── COUNTDOWN ──
+      const pad = (n) => String(n).padStart(2, "0");
+      let cdDone = false;
+      function getTarget() {
+        const n = new Date(),
+          y = n.getFullYear();
+        let t = new Date(y, 2, 25, 0, 0, 0);
+        if (n >= t) t = new Date(y + 1, 2, 25, 0, 0, 0);
+        return t;
+      }
+      function tick() {
+        const diff = getTarget() - Date.now();
+        if (diff <= 0 && !cdDone) {
+          cdDone = true;
+          doReveal();
+          return;
+        }
+        const d = Math.floor(diff / 86400000),
+          h = Math.floor((diff % 86400000) / 3600000),
+          m = Math.floor((diff % 3600000) / 60000),
+          s = Math.floor((diff % 60000) / 1000);
+        document.getElementById("cd").textContent = pad(d);
+        document.getElementById("ch").textContent = pad(h);
+        document.getElementById("cm").textContent = pad(m);
+        document.getElementById("cs").textContent = pad(s);
+      }
+      tick();
+      setInterval(tick, 1000);
+      // birthday today → auto-skip
+      const _n = new Date();
+      if (
+        _n >= new Date(_n.getFullYear(), 2, 25) &&
+        _n < new Date(_n.getFullYear(), 2, 26)
+      )
+        setTimeout(() => {
+          if (!cdDone) {
+            cdDone = true;
+            doReveal();
+          }
+        }, 500);
+      // double-click skip
+      document.getElementById("s1").addEventListener("dblclick", () => {
+        if (!cdDone) {
+          cdDone = true;
+          doReveal();
+        }
+      });
+
+      // ── TRANSITIONS ──
+      const tov = document.getElementById("tov");
+      function goTo(fromId, toId, prep, dur = 700) {
+        return new Promise((res) => {
+          tov.style.pointerEvents = "all";
+          gsap.to(tov, {
+            opacity: 1,
+            duration: (dur / 1000) * 0.45,
+            onComplete: () => {
+              document.getElementById(fromId).classList.remove("active");
+              if (prep) prep();
+              document.getElementById(toId).classList.add("active");
+              gsap.to(tov, {
+                opacity: 0,
+                duration: (dur / 1000) * 0.55,
+                onComplete: () => {
+                  tov.style.pointerEvents = "none";
+                  res();
+                },
+              });
+            },
+          });
+        });
+      }
+
+      // ── S2 REVEAL ──
+      function doReveal() {
+        goTo(
+          "s1",
+          "s2",
+          () => {
+            const rt = document.getElementById("rtext");
+            rt.innerHTML = ["HAPPY", "BIRTHDAY", "YOGESH "]
+              .map(
+                (l) =>
+                  `<div>${l
+                    .split("")
+                    .map((c) => `<span>${c === " " ? "&nbsp;" : c}</span>`)
+                    .join("")}</div>`,
+              )
+              .join("");
+          },
+          850,
+        ).then(() => {
+          const spans = document.querySelectorAll("#rtext span");
+          gsap.fromTo(
+            spans,
+            { opacity: 0, y: 32, scale: 0.62 },
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              stagger: 0.055,
+              duration: 0.48,
+              ease: "back.out(1.8)",
+              onComplete: () => {
+                gsap.to("#rsub", { opacity: 1, duration: 0.6, delay: 0.25 });
+                setTimeout(doHero, 2300);
+              },
+            },
+          );
+        });
+      }
+
+      // ── S3 HERO ──
+      function doHero() {
+        spawnBalloons();
+        goTo("s2", "s3", null, 700).then(() => {
+          gsap.fromTo(
+            "#pWrap",
+            { scale: 0.48, opacity: 0 },
+            { scale: 1, opacity: 1, duration: 0.9, ease: "elastic.out(1,.65)" },
+          );
+          gsap.fromTo(
+            "#hName",
+            { y: 22, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.68, delay: 0.3 },
+          );
+          gsap.fromTo(
+            "#hTag",
+            { y: 14, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.58, delay: 0.5 },
+          );
+          gsap.fromTo(
+            ".vibe-btn",
+            { scale: 0.72, opacity: 0 },
+            {
+              scale: 1,
+              opacity: 1,
+              duration: 0.58,
+              delay: 0.68,
+              ease: "back.out(2)",
+            },
+          );
+        });
+      }
+
+      // vibe btn
+      document.getElementById("vibeBtn").addEventListener("click", () => {
+        const sp = document.getElementById("spotlight");
+        sp.classList.add("on");
+        gsap.fromTo(
+          ".sbeam",
+          { scaleY: 0, transformOrigin: "top center" },
+          { scaleY: 1, duration: 1.15, ease: "power3.out" },
+        );
+        toggleMusic(true);
+        setTimeout(doFun, 2000);
+      });
+      document.getElementById("spotClose").addEventListener("click", () => {
+        document.getElementById("spotlight").classList.remove("on");
+      });
+
+      // ── S4 FUN + CAKE ──
+      function doFun() {
+        document.getElementById("spotlight").classList.remove("on");
+        goTo("s3", "s4", null, 700).then(() => {
+          gsap.to("#fc1", {
+            opacity: 1,
+            y: 0,
+            duration: 0.62,
+            ease: "power3.out",
+            delay: 0.08,
+          });
+          gsap.to("#fc2", {
+            opacity: 1,
+            y: 0,
+            duration: 0.62,
+            ease: "power3.out",
+            delay: 0.26,
+          });
+          gsap.to("#cakeArea", {
+            opacity: 1,
+            y: 0,
+            duration: 0.62,
+            ease: "power3.out",
+            delay: 0.48,
+          });
+        });
+      }
+
+      // ── CAKE ──
+      let blown = false;
+      document.getElementById("cakeWrap").addEventListener("click", () => {
+        if (blown) return;
+        blown = true;
+        const fg = document.getElementById("flameG");
+        gsap.to(fg, {
+          opacity: 0,
+          scale: 0.18,
+          transformOrigin: "center bottom",
+          duration: 0.22,
+          ease: "power2.in",
+          onComplete: () => {
+            fg.style.display = "none";
+            // smoke
+            const r = document
+              .getElementById("cakeWrap")
+              .getBoundingClientRect();
+            for (let i = 0; i < 7; i++) {
+              const sm = document.createElement("div");
+              sm.className = "smoke";
+              sm.style.left =
+                r.left + r.width / 2 - 4 + (Math.random() * 16 - 8) + "px";
+              sm.style.top = r.top + 50 + "px";
+              sm.style.animationDelay = i * 0.11 + "s";
+              document.body.appendChild(sm);
+              setTimeout(() => sm.remove(), 2000);
+            }
+            gsap.to("#cakeHint", { opacity: 0, duration: 0.28 });
+            setTimeout(blast, 420);
+          },
+        });
+      });
+
+      function blast() {
+        const cols = [
+          "#b060ff",
+          "#ff4fcf",
+          "#4fc3ff",
+          "#ffe040",
+          "#00f5d4",
+          "#ff8060",
+        ];
+        confetti({
+          particleCount: 130,
+          spread: 85,
+          origin: { y: 0.55 },
+          colors: cols,
+          zIndex: 600,
+        });
+        setTimeout(
+          () =>
+            confetti({
+              particleCount: 55,
+              spread: 110,
+              origin: { x: 0.08, y: 0.6 },
+              colors: cols,
+              zIndex: 600,
+            }),
+          320,
+        );
+        setTimeout(
+          () =>
+            confetti({
+              particleCount: 55,
+              spread: 110,
+              origin: { x: 0.92, y: 0.6 },
+              colors: cols,
+              zIndex: 600,
+            }),
+          520,
+        );
+        setTimeout(showFinal, 850);
+      }
+      function showFinal() {
+        gsap.to("#finalCard", {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+        });
+        setTimeout(showPopup, 1400);
+      }
+      function showPopup() {
+        document.getElementById("funPopup").classList.add("show");
+      }
+      document.getElementById("popClose").addEventListener("click", () => {
+        document.getElementById("funPopup").classList.remove("show");
+      });
+      document.getElementById("funPopup").addEventListener("click", (e) => {
+        if (e.target === document.getElementById("funPopup"))
+          document.getElementById("funPopup").classList.remove("show");
+      });
+
+      // ── BALLOONS ──
+      const BC = [
+        ["#ff4fcf", "#cc3099"],
+        ["#b060ff", "#7030bb"],
+        ["#4fc3ff", "#2090cc"],
+        ["#ff6060", "#cc3030"],
+        ["#ffe040", "#ccaa00"],
+        ["#00f5d4", "#00b090"],
+      ];
+      function mkB(f, s) {
+        return `<svg viewBox="0 0 60 90" xmlns="http://www.w3.org/2000/svg"><ellipse cx="30" cy="32" rx="23" ry="27" fill="${f}" opacity=".88"/><ellipse cx="22" cy="22" rx="5.5" ry="7" fill="rgba(255,255,255,.22)" transform="rotate(-20,22,22)"/><path d="M30 59 Q28 70 30 80 Q32 70 30 59" stroke="${s}" stroke-width="1.5" fill="none"/></svg>`;
+      }
+      function spawnBalloons() {
+        const w = document.getElementById("bwrap");
+        w.innerHTML = "";
+        for (let i = 0; i < 14; i++) {
+          const [f, s] = BC[i % BC.length],
+            el = document.createElement("div");
+          el.className = "balloon";
+          const sz = 36 + Math.random() * 30,
+            dur = 9 + Math.random() * 8,
+            del = Math.random() * 11,
+            rot = (Math.random() * 26 - 13).toFixed(1);
+          el.style.cssText = `width:${sz}px;--dur:${dur}s;--del:${del}s;--rot:${rot}deg;left:${Math.random() * 93}%;`;
+          el.innerHTML = mkB(f, s);
+          w.appendChild(el);
+        }
+      }
+
+      // ── MUSIC ──
+      let actx = null,
+        musicOn = false,
+        mNodes = [],
+        mTimer = null;
+      const NOTES = [
+        261.63, 261.63, 293.66, 261.63, 349.23, 329.63, 261.63, 261.63, 293.66,
+        261.63, 392, 349.23, 261.63, 261.63, 523.25, 440, 349.23, 329.63,
+        293.66, 466.16, 466.16, 440, 349.23, 392, 349.23,
+      ];
+      const DURS = [
+        0.35, 0.15, 0.5, 0.5, 0.5, 1, 0.35, 0.15, 0.5, 0.5, 0.5, 1, 0.35, 0.15,
+        0.5, 0.5, 0.5, 0.35, 0.65, 0.35, 0.15, 0.5, 0.5, 0.5, 1.2,
+      ];
+      function playMelody() {
+        if (!actx)
+          actx = new (window.AudioContext || window.webkitAudioContext)();
+        if (actx.state === "suspended") actx.resume();
+        let t = actx.currentTime + 0.1;
+        NOTES.forEach((f, i) => {
+          const o = actx.createOscillator(),
+            g = actx.createGain();
+          o.connect(g);
+          g.connect(actx.destination);
+          o.type = "sine";
+          o.frequency.value = f;
+          g.gain.setValueAtTime(0, t);
+          g.gain.linearRampToValueAtTime(0.16, t + 0.05);
+          g.gain.exponentialRampToValueAtTime(0.001, t + DURS[i] * 0.88);
+          o.start(t);
+          o.stop(t + DURS[i]);
+          t += DURS[i];
+          mNodes.push(o);
+        });
+        mTimer = setTimeout(
+          playMelody,
+          DURS.reduce((a, b) => a + b, 0) * 1000 + 900,
+        );
+      }
+      function stopMusic() {
+        clearTimeout(mTimer);
+        mNodes.forEach((n) => {
+          try {
+            n.stop();
+          } catch (e) {}
+        });
+        mNodes = [];
+      }
+      function toggleMusic(forceOn) {
+        if (!actx)
+          actx = new (window.AudioContext || window.webkitAudioContext)();
+        if (forceOn && musicOn) return;
+        if (musicOn && !forceOn) {
+          stopMusic();
+          musicOn = false;
+          document.getElementById("mBtn").textContent = "♪ Music";
+        } else {
+          playMelody();
+          musicOn = true;
+          document.getElementById("mBtn").textContent = "⏸ Pause";
+        }
+      }
+      document
+        .getElementById("mBtn")
+        .addEventListener("click", () => toggleMusic());
+    </script>
+  </body>
+</html>
